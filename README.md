@@ -1,3 +1,10 @@
+Kloniranje repozitorija
+Klonirajte repozitorij na svoje računalo:
+
+bash
+Copy code
+git clone https://github.com/eugendeur1/KINGICT.git
+
 Konfiguracija i podešavanje
 Baza podataka:
 Projekt koristi lokalnu SQL Server bazu podataka. Podesite vezu s bazom u appsettings.json:
