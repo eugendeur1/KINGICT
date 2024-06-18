@@ -12,6 +12,10 @@ URL: /api/products/{id}
 URL: /api/products/filter
 4. Pretraga proizvoda po nazivu
 URL: /api/products/search
+{
+  "username": "KINGICT",
+  "password": "KINGICT"
+}
 
 Autor
 Projekt razvio: Eugen Deur
