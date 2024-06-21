@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 using WebApplication1.Services;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace WebApplication1
 {
@@ -23,16 +24,16 @@ namespace WebApplication1
         // ConfigureServices is used to add services to the DI container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add HttpClientFactory for making HTTP requests
+            // Dodaj HttpClientFactory za HTTP zahtjeve
             services.AddHttpClient();
 
-            // Add controllers
+            // Dodaj kontrolere
             services.AddControllers();
 
-            // Add Swagger/OpenAPI services (optional, for API documentation)
+            // Dodaj Swagger/OpenAPI servise (opciono, za dokumentaciju API-ja)
             services.AddSwaggerGen();
 
-            // Add authentication with JWT Bearer token
+            // Dodaj autentikaciju sa JWT Bearer tokenom
             var key = Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]);
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -43,26 +44,30 @@ namespace WebApplication1
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false, // Modify as needed
-                        ValidateAudience = false, // Modify as needed
-                        ClockSkew = TimeSpan.Zero // This helps with clock skew when comparing token expiry
+                        ValidateIssuer = false, // Promijenite po potrebi
+                        ValidateAudience = false, // Promijenite po potrebi
+                        ClockSkew = TimeSpan.Zero // Pomaže kod odstupanja sata prilikom usporedbe isteka tokena
                     };
                 });
 
-            // Add authorization policies if needed
+            // Dodaj autorizacijske politike ako su potrebne
             services.AddAuthorization();
 
-            // Configure CORS if needed
+            // Konfiguriraj CORS ako je potrebno
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder
                         .AllowAnyMethod()
                         .AllowAnyHeader()
-                        .WithOrigins("https://example.com") // Update with your frontend URL
+                        .WithOrigins("https://example.com") // Ažurirajte sa svojom URL adresom frontend aplikacije
                         .AllowCredentials());
             });
+
+            // Dodaj keširanje u memoriju
+            services.AddMemoryCache();
         }
+
 
         // Configure is used to set up the middleware pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

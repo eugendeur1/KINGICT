@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WebApplication1.Models;
@@ -25,10 +23,6 @@ namespace WebApplication1.Controllers
             _logger = logger;
         }
 
-        /// <summary>
-        /// Dohvaća sve proizvode s osnovnim informacijama (slika, naziv, cijena, kratki opis).
-        /// </summary>
-        /// <returns> Napravio sam model(klasu) ProductDTO koja sadrži osnovne informacije.</returns>
         [HttpGet("GetAllProducts")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
         {
@@ -75,11 +69,6 @@ namespace WebApplication1.Controllers
             }
         }
 
-        /// <summary>
-        /// Dohvaća detalje jednog proizvoda prema njegovom jedinstvenom identifikatoru.
-        /// </summary>
-        /// <param name="id">ID proizvoda koji se dohvaća.</param>
-        /// <returns>Detalji proizvoda, prema proizvoda </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
@@ -91,10 +80,10 @@ namespace WebApplication1.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     string productJson = await response.Content.ReadAsStringAsync();
-                    var product = JsonConvert.DeserializeObject<Product>(productJson);
+                    var product = Newtonsoft.Json.JsonConvert.DeserializeObject<Product>(productJson);
                     return Ok(product);
                 }
-                else if (response.StatusCode == HttpStatusCode.NotFound)
+                else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
                     return NotFound();
                 }
@@ -111,12 +100,6 @@ namespace WebApplication1.Controllers
             }
         }
 
-        /// <summary>
-        /// Filtrira proizvode po kategoriji i/ili cijeni.
-        /// </summary>
-        /// <param name="category">Opcionalno. Kategorija po kojoj se filtrira.</param>
-        /// <param name="price">Opcionalno. Maksimalna cijena po kojoj se filtrira.</param>
-        /// <returns>Lista ProductDTO objekata filtriranih po kategoriji i/ili cijeni.</returns>
         [HttpGet("filter")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> FilterProductsByCategoryAndPrice(string category, decimal? price)
         {
@@ -186,11 +169,6 @@ namespace WebApplication1.Controllers
             }
         }
 
-        /// <summary>
-        /// Pretražuje proizvode prema nazivu.
-        /// </summary>
-        /// <param name="title">Naziv proizvoda za pretragu.</param>
-        /// <returns>Lista proizvoda koji sadrže zadani naziv.</returns>
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<Product>>> SearchProducts(string title)
         {
