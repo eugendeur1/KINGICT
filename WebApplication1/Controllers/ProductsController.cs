@@ -28,7 +28,7 @@ namespace WebApplication1.Controllers
         /// <summary>
         /// Dohvaća sve proizvode s osnovnim informacijama (slika, naziv, cijena, kratki opis).
         /// </summary>
-        /// <returns>Lista ProductDTO objekata koji sadrže osnovne informacije o proizvodima.</returns>
+        /// <returns> Napravio sam model(klasu) ProductDTO koja sadrži osnovne informacije.</returns>
         [HttpGet("GetAllProducts")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
         {
@@ -79,7 +79,7 @@ namespace WebApplication1.Controllers
         /// Dohvaća detalje jednog proizvoda prema njegovom jedinstvenom identifikatoru.
         /// </summary>
         /// <param name="id">ID proizvoda koji se dohvaća.</param>
-        /// <returns>Detalji proizvoda.</returns>
+        /// <returns>Detalji proizvoda, prema proizvoda </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
