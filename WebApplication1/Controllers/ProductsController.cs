@@ -10,6 +10,9 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
+    /// <summary>
+    /// Controller za upravljanje proizvodima.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
@@ -17,12 +20,21 @@ namespace WebApplication1.Controllers
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<ProductsController> _logger;
 
+        /// <summary>
+        /// Konstruktor za ProductsController.
+        /// </summary>
+        /// <param name="httpClientFactory">Factory za stvaranje HttpClient instanci.</param>
+        /// <param name="logger">Logger za zapisivanje poruka o greškama.</param>
         public ProductsController(IHttpClientFactory httpClientFactory, ILogger<ProductsController> logger)
         {
             _httpClientFactory = httpClientFactory;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Dohvaća sve proizvode.
+        /// </summary>
+        /// <returns>ActionResult koji vraća enumeraciju ProductDTO objekata.</returns>
         [HttpGet("GetAllProducts")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
         {
@@ -69,6 +81,11 @@ namespace WebApplication1.Controllers
             }
         }
 
+        /// <summary>
+        /// Dohvaća proizvod prema ID-u.
+        /// </summary>
+        /// <param name="id">ID proizvoda koji se dohvaća.</param>
+        /// <returns>ActionResult koji vraća Product objekt.</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
@@ -100,6 +117,12 @@ namespace WebApplication1.Controllers
             }
         }
 
+        /// <summary>
+        /// Filtrira proizvode prema kategoriji i/ili cijeni.
+        /// </summary>
+        /// <param name="category">Kategorija po kojoj se filtriraju proizvodi.</param>
+        /// <param name="price">Maksimalna cijena proizvoda.</param>
+        /// <returns>ActionResult koji vraća filtriranu enumeraciju ProductDTO objekata.</returns>
         [HttpGet("filter")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> FilterProductsByCategoryAndPrice(string category, decimal? price)
         {
@@ -169,6 +192,11 @@ namespace WebApplication1.Controllers
             }
         }
 
+        /// <summary>
+        /// Pretražuje proizvode prema nazivu.
+        /// </summary>
+        /// <param name="title">Naziv proizvoda ili dio naziva.</param>
+        /// <returns>ActionResult koji vraća enumeraciju Product objekata koji odgovaraju pretrazi.</returns>
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<Product>>> SearchProducts(string title)
         {
